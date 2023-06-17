@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище testCyberModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="IdEvent" Type="int" />
+          <Property Name="IdModer" Type="int" />
+          <Property Name="Date" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ActivityJury">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="JuryId" Type="int" />
+          <Property Name="ActivityId" Type="int" />
+        </EntityType>
+        <EntityType Name="ActivityMember">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ActivityId" Type="int" />
+          <Property Name="MemberId" Type="int" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrganizerId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Place" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="EventOrganizer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="OrganizerId" Type="int" />
+          <Property Name="EventId" Type="int" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateBirthDay" Type="date" />
+          <Property Name="Image" Type="varbinary" MaxLength="50" />
+          <Property Name="PathString" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Activity_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="IdEvent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Activity_User1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="IdModer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityJury_Activity">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="0..1" />
+          <End Role="ActivityJury" Type="Self.ActivityJury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityJury">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityJury_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ActivityJury" Type="Self.ActivityJury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityJury">
+              <PropertyRef Name="JuryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMember_Activity">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="0..1" />
+          <End Role="ActivityMember" Type="Self.ActivityMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityMember">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMember_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ActivityMember" Type="Self.ActivityMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityMember">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventOrganizer_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="EventOrganizer" Type="Self.EventOrganizer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventOrganizer">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventOrganizer_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="EventOrganizer" Type="Self.EventOrganizer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventOrganizer">
+              <PropertyRef Name="OrganizerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище testCyberModelContainer">
+          <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityJury" EntityType="Self.ActivityJury" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityMember" EntityType="Self.ActivityMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventOrganizer" EntityType="Self.EventOrganizer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Activity_Event" Association="Self.FK_Activity_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Activity_User1" Association="Self.FK_Activity_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityJury_Activity" Association="Self.FK_ActivityJury_Activity">
+            <End Role="Activity" EntitySet="Activity" />
+            <End Role="ActivityJury" EntitySet="ActivityJury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityJury_User" Association="Self.FK_ActivityJury_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityJury" EntitySet="ActivityJury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityMember_Activity" Association="Self.FK_ActivityMember_Activity">
+            <End Role="Activity" EntitySet="Activity" />
+            <End Role="ActivityMember" EntitySet="ActivityMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityMember_User" Association="Self.FK_ActivityMember_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityMember" EntitySet="ActivityMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventOrganizer_Event" Association="Self.FK_EventOrganizer_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventOrganizer" EntitySet="EventOrganizer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventOrganizer_User" Association="Self.FK_EventOrganizer_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="EventOrganizer" EntitySet="EventOrganizer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="testCyberModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdEvent" Type="Int32" />
+          <Property Name="IdModer" Type="Int32" />
+          <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_Activity_Event" FromRole="Activity" ToRole="Event" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Activity_User1" FromRole="Activity" ToRole="User" />
+          <NavigationProperty Name="ActivityJury" Relationship="Self.FK_ActivityJury_Activity" FromRole="Activity" ToRole="ActivityJury" />
+          <NavigationProperty Name="ActivityMember" Relationship="Self.FK_ActivityMember_Activity" FromRole="Activity" ToRole="ActivityMember" />
+        </EntityType>
+        <EntityType Name="ActivityJury">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="JuryId" Type="Int32" />
+          <Property Name="ActivityId" Type="Int32" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK_ActivityJury_Activity" FromRole="ActivityJury" ToRole="Activity" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ActivityJury_User" FromRole="ActivityJury" ToRole="User" />
+        </EntityType>
+        <EntityType Name="ActivityMember">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ActivityId" Type="Int32" />
+          <Property Name="MemberId" Type="Int32" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK_ActivityMember_Activity" FromRole="ActivityMember" ToRole="Activity" />
+          <NavigationProperty Name="User" Relationship="Self.FK_ActivityMember_User" FromRole="ActivityMember" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OrganizerId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Place" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK_Activity_Event" FromRole="Event" ToRole="Activity" />
+          <NavigationProperty Name="EventOrganizer" Relationship="Self.FK_EventOrganizer_Event" FromRole="Event" ToRole="EventOrganizer" />
+        </EntityType>
+        <EntityType Name="EventOrganizer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="OrganizerId" Type="Int32" />
+          <Property Name="EventId" Type="Int32" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_EventOrganizer_Event" FromRole="EventOrganizer" ToRole="Event" />
+          <NavigationProperty Name="User" Relationship="Self.FK_EventOrganizer_User" FromRole="EventOrganizer" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_Role" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateBirthDay" Type="DateTime" Precision="0" />
+          <Property Name="Image" Type="Binary" MaxLength="50" FixedLength="false" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK_Activity_User1" FromRole="User" ToRole="Activity" />
+          <NavigationProperty Name="ActivityJury" Relationship="Self.FK_ActivityJury_User" FromRole="User" ToRole="ActivityJury" />
+          <NavigationProperty Name="ActivityMember" Relationship="Self.FK_ActivityMember_User" FromRole="User" ToRole="ActivityMember" />
+          <NavigationProperty Name="EventOrganizer" Relationship="Self.FK_EventOrganizer_User" FromRole="User" ToRole="EventOrganizer" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_User_Role" FromRole="User" ToRole="Role" />
+          <Property Name="PathString" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Activity_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="IdEvent" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Activity_User1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="IdModer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityJury_Activity">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="0..1" />
+          <End Role="ActivityJury" Type="Self.ActivityJury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityJury">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMember_Activity">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="0..1" />
+          <End Role="ActivityMember" Type="Self.ActivityMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityMember">
+              <PropertyRef Name="ActivityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityJury_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ActivityJury" Type="Self.ActivityJury" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityJury">
+              <PropertyRef Name="JuryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ActivityMember_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ActivityMember" Type="Self.ActivityMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ActivityMember">
+              <PropertyRef Name="MemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventOrganizer_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="EventOrganizer" Type="Self.EventOrganizer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventOrganizer">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventOrganizer_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="EventOrganizer" Type="Self.EventOrganizer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="EventOrganizer">
+              <PropertyRef Name="OrganizerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testCyberEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activity" EntityType="Self.Activity" />
+          <EntitySet Name="ActivityJury" EntityType="Self.ActivityJury" />
+          <EntitySet Name="ActivityMember" EntityType="Self.ActivityMember" />
+          <EntitySet Name="Event" EntityType="Self.Event" />
+          <EntitySet Name="EventOrganizer" EntityType="Self.EventOrganizer" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_Activity_Event" Association="Self.FK_Activity_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Activity_User1" Association="Self.FK_Activity_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityJury_Activity" Association="Self.FK_ActivityJury_Activity">
+            <End Role="Activity" EntitySet="Activity" />
+            <End Role="ActivityJury" EntitySet="ActivityJury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityMember_Activity" Association="Self.FK_ActivityMember_Activity">
+            <End Role="Activity" EntitySet="Activity" />
+            <End Role="ActivityMember" EntitySet="ActivityMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityJury_User" Association="Self.FK_ActivityJury_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityJury" EntitySet="ActivityJury" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ActivityMember_User" Association="Self.FK_ActivityMember_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="ActivityMember" EntitySet="ActivityMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventOrganizer_Event" Association="Self.FK_EventOrganizer_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventOrganizer" EntitySet="EventOrganizer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventOrganizer_User" Association="Self.FK_EventOrganizer_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="EventOrganizer" EntitySet="EventOrganizer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Role" Association="Self.FK_User_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище testCyberModelContainer" CdmEntityContainer="testCyberEntities">
+          <EntitySetMapping Name="Activity">
+            <EntityTypeMapping TypeName="testCyberModel.Activity">
+              <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IdEvent" ColumnName="IdEvent" />
+                <ScalarProperty Name="IdModer" ColumnName="IdModer" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityJury">
+            <EntityTypeMapping TypeName="testCyberModel.ActivityJury">
+              <MappingFragment StoreEntitySet="ActivityJury">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="JuryId" ColumnName="JuryId" />
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityMember">
+            <EntityTypeMapping TypeName="testCyberModel.ActivityMember">
+              <MappingFragment StoreEntitySet="ActivityMember">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ActivityId" ColumnName="ActivityId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Event">
+            <EntityTypeMapping TypeName="testCyberModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="OrganizerId" ColumnName="OrganizerId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventOrganizer">
+            <EntityTypeMapping TypeName="testCyberModel.EventOrganizer">
+              <MappingFragment StoreEntitySet="EventOrganizer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OrganizerId" ColumnName="OrganizerId" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="testCyberModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="testCyberModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="testCyberModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="PathString" ColumnName="PathString" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="DateBirthDay" ColumnName="DateBirthDay" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
